@@ -1,0 +1,14 @@
+:root {
+    --main-bg-color: #fbf1c7;
+    --main-fg-color: #282828;
+}
+
+body {
+    position: fixed;
+    height: 100%;
+    width: 100%;;
+    margin: 0;
+    padding: 0;
+    color: var(--main-fg-color);
+    background-color: var(--main-bg-color);
+}
