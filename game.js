@@ -22,6 +22,13 @@ const game = (function() {
         }
     }
 
+    function markBoard(square) {
+        if (square.innerHTML === "") {
+            square.innerHTML = _currentPlayer.getTile();
+            switchPlayer();
+        }
+    }
+
     function initialize() {
         _player1 = player("Bob", "X");
         _player2 = player("Alice", "O");
@@ -30,8 +37,7 @@ const game = (function() {
         let squares = document.querySelectorAll(".boardSquare");
         squares.forEach(square => {
             square.addEventListener("click", function() {
-                square.innerHTML = _currentPlayer.getTile();
-                switchPlayer();
+                markBoard(square);
             })
             _board.push(square);
         });
