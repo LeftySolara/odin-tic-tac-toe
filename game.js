@@ -13,6 +13,15 @@ const game = (function() {
     let _currentPlayer;
     let _board = [];
 
+    function switchPlayer() {
+        if (_currentPlayer === _player1) {
+            _currentPlayer = _player2;
+        }
+        else {
+            _currentPlayer = _player1;
+        }
+    }
+
     function initialize() {
         _player1 = player("Bob", "X");
         _player2 = player("Alice", "O");
@@ -22,6 +31,7 @@ const game = (function() {
         squares.forEach(square => {
             square.addEventListener("click", function() {
                 square.innerHTML = _currentPlayer.getTile();
+                switchPlayer();
             })
             _board.push(square);
         });
