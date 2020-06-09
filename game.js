@@ -5,42 +5,26 @@ const player = (name, tile) => {
     return {getName, getTile};
 };
 
-const gameBoard = (function() {
+const game = (function() {
     "use strict"
 
-    let _board = [];
-    let _currentTile = "";
-
-    function setCurrentTile(symbol) {
-        _currentTile = symbol;
-    }
-
-    function initialize() {
-        let squares = document.querySelectorAll(".boardSquare");
-        squares.forEach(square => {
-            square.addEventListener("click", function() {
-                square.innerHTML = _currentTile;
-            })
-            _board.push(square)
-        });
-    }
-
-    return {setCurrentTile, initialize}
-})();
-
-const game = (function() {
     let _player1;
     let _player2;
     let _currentPlayer;
-    let _board = gameBoard;
+    let _board = [];
 
     function initialize() {
         _player1 = player("Bob", "X");
         _player2 = player("Alice", "O");
         _currentPlayer = _player1;
 
-        _board.initialize();
-        _board.setCurrentTile(_currentPlayer.getTile());
+        let squares = document.querySelectorAll(".boardSquare");
+        squares.forEach(square => {
+            square.addEventListener("click", function() {
+                square.innerHTML = _currentPlayer.getTile();
+            })
+            _board.push(square);
+        });
     }
 
     return {initialize};
