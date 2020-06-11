@@ -11,7 +11,11 @@ const game = (function() {
     let _player1;
     let _player2;
     let _currentPlayer;
-    let _board = [];
+    let _board = [
+        [null, null, null],
+        [null, null, null],
+        [null, null, null]
+    ];
 
     function switchPlayer() {
         if (_currentPlayer === _player1) {
@@ -22,7 +26,8 @@ const game = (function() {
         }
     }
 
-    function markBoard(square) {
+    function markBoard(row, column) {
+        let square = _board[row][column];
         if (square.innerHTML === "") {
             square.innerHTML = _currentPlayer.getTile();
             switchPlayer();
@@ -34,13 +39,16 @@ const game = (function() {
         _player2 = player("Alice", "O");
         _currentPlayer = _player1;
 
-        let squares = document.querySelectorAll(".boardSquare");
-        squares.forEach(square => {
-            square.addEventListener("click", function() {
-                markBoard(square);
-            })
-            _board.push(square);
-        });
+        let squares = Array.from(document.querySelectorAll(".boardSquare"));
+        for (let row = 0; row < _board.length; ++row) {
+            for (let col = 0; col < _board[0].length; ++col) {
+                let square = squares.shift();
+                square.addEventListener("click", function() {
+                    markBoard(row, col);
+                });
+                _board[row][col] = square;
+            }
+        }
     }
 
     return {initialize};
