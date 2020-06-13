@@ -10,12 +10,17 @@
         <!-- Roboto Font -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
     </head>
-    <header>
-        <h1>Tic Tac Toe</h1>
-        <h2>By LeftySolara</h2>
-    </header>
     <body>
+        <header>
+            <h1>Tic Tac Toe</h1>
+            <h2>By LeftySolara</h2>
+        </header>
         <div id="boardContainer">
+            <div id="player1Info" class="playerInfo">
+                <h1 id="player1Name">Player 1</h1>
+                <h2 id="player1Score">Score: 0</h2>
+                <button id="setName1" class="setNameBtn">Set Name</button>
+            </div>
             <div id="board">
                 <div class="boardSquare"></div>
                 <div class="boardSquare"></div>
@@ -27,10 +32,15 @@
                 <div class="boardSquare"></div>
                 <div class="boardSquare"></div>
             </div>
+            <div id="player2Info" class="playerInfo">
+                <h1 id="player2Name">Player 2</h1>
+                <h2 id="player2Score">Score: 0</h2>
+                <button id="setName2" class="setNameBtn">Set Name</button>
+            </div>
         </div>
+        <footer>
+            <a href="https://github.com/LeftySolara/odin-project/tree/master/tic-tac-toe">View on GitHub</a>
+        </footer>
+        <script src="game.js"></script>
     </body>
-    <footer>
-        <a href="https://github.com/LeftySolara/odin-project/tree/master/tic-tac-toe">View on GitHub</a>
-    </footer>
-    <script src="game.js"></script>
 </html>

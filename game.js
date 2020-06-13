@@ -1,5 +1,7 @@
-const player = (name, tile) => {
+const player = (playerName, playerTile) => {
 
+    let name = playerName;
+    let tile = playerTile;
     let marks = {
         row: [0, 0, 0],
         column: [0, 0, 0],
@@ -7,10 +9,7 @@ const player = (name, tile) => {
         antidiag: 0,
     }
 
-    const getName = () => name;
-    const getTile = () => tile;
-
-    return {marks, getName, getTile};
+    return {name, tile, marks};
 };
 
 const gameBoard = (function() {
@@ -85,31 +84,65 @@ const game = (function() {
         else {
             _currentPlayer = _player1;
         }
-        gameBoard.setSymbol(_currentPlayer.getTile());
+        gameBoard.setSymbol(_currentPlayer.tile);
     }
 
     function performTurn(row, column) {
         gameBoard.markBoard(row, column);
         if (gameBoard.checkForWin(row, column, _currentPlayer.marks)) {
-            alert(`${_currentPlayer.getName()} wins!`);
+            alert(`${_currentPlayer.name} wins!`);
         }
         _switchPlayer();
     }
 
+    function setPlayer1Name(name) {
+        _player1.name = name;
+    }
+
+    function setPlayer2Name(name) {
+        _player2.name = name;
+    }
+
     function initialize() {
-        _player1 = player("Bob", "X");
-        _player2 = player("Alice", "O");
+        _player1 = player("Player 1", "X");
+        _player2 = player("Player 2", "O");
         _currentPlayer = _player1;
 
         gameBoard.initialize(performTurn);
-        gameBoard.setSymbol(_currentPlayer.getTile());
+        gameBoard.setSymbol(_currentPlayer.tile);
     }
 
-    return {initialize};
+    return {initialize, setPlayer1Name, setPlayer2Name};
 })();
 
 let displayController = (function() {
-    /* TODO; implement me! */
+
+    function _setPlayerName(number, name) {
+        let id = "#player" + number + "Name";
+        let nameDisplay = document.querySelector(id);
+        nameDisplay.innerHTML = name;
+    }
+
+    function initializeButtons() {
+        let nameButtons = document.querySelectorAll(".setNameBtn");
+        for (let i = 0; i < nameButtons.length; ++i) {
+            nameButtons[i].addEventListener("click", function() {
+                let promptText = "Enter name for player " + (i+1) + ":";
+                let name = prompt(promptText);
+                _setPlayerName(i+1, name);
+
+                if (i === 0) {
+                    game.setPlayer1Name(name);
+                }
+                else {
+                    game.setPlayer2Name(name);
+                }
+            });
+        }
+    }
+
+    return {initializeButtons};
 })();
 
 game.initialize();
+displayController.initializeButtons();

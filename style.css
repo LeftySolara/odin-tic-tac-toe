@@ -52,10 +52,9 @@ footer a {
 #boardContainer {
     display: flex;
     align-items: center;
-    align-content: center;
-    justify-content: center;
-    height: 100%;
-    width: 33%;
+    justify-content: space-around;
+    height: 80%;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -63,8 +62,14 @@ footer a {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    width: 100%;
+    width: 33%;
     height: 50%;
+}
+
+.playerInfo {
+    font-family: "Fira Sans", sans-serif;
+    font-size: 18px;
+    text-align: center;
 }
 
 .boardSquare {
