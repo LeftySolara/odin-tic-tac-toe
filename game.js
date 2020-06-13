@@ -1,7 +1,9 @@
-const player = (playerName, playerTile) => {
+const player = (playerID, playerName, playerTile) => {
 
+    let id = playerID;
     let name = playerName;
     let tile = playerTile;
+    let score = 0;
     let marks = {
         row: [0, 0, 0],
         column: [0, 0, 0],
@@ -9,7 +11,7 @@ const player = (playerName, playerTile) => {
         antidiag: 0,
     }
 
-    return {name, tile, marks};
+    return {id, name, tile, score, marks};
 };
 
 const gameBoard = (function() {
@@ -77,6 +79,15 @@ const game = (function() {
     let _player2;
     let _currentPlayer;
 
+    const _winEvent = new CustomEvent("playerWin", {
+        bubbles: true,
+        detail: {
+            id: () => _currentPlayer.id,
+            name: () => _currentPlayer.name,
+            score: () => _currentPlayer.score
+        }
+    });
+
     function _switchPlayer() {
         if (_currentPlayer === _player1) {
             _currentPlayer = _player2;
@@ -90,7 +101,9 @@ const game = (function() {
     function performTurn(row, column) {
         gameBoard.markBoard(row, column);
         if (gameBoard.checkForWin(row, column, _currentPlayer.marks)) {
-            alert(`${_currentPlayer.name} wins!`);
+            _currentPlayer.score++;
+            let boardDisplay = document.querySelector("#board");
+            boardDisplay.dispatchEvent(_winEvent);
         }
         _switchPlayer();
     }
@@ -104,8 +117,8 @@ const game = (function() {
     }
 
     function initialize() {
-        _player1 = player("Player 1", "X");
-        _player2 = player("Player 2", "O");
+        _player1 = player(1, "Player 1", "X");
+        _player2 = player(2, "Player 2", "O");
         _currentPlayer = _player1;
 
         gameBoard.initialize(performTurn);
@@ -123,7 +136,13 @@ let displayController = (function() {
         nameDisplay.innerHTML = name;
     }
 
-    function initializeButtons() {
+    function _setPlayerScore(playerID, score) {
+        let elemID = "#player" + playerID + "Score";
+        let scoreDisplay = document.querySelector(elemID);
+        scoreDisplay.innerHTML = "Score: " + score;
+    }
+
+    function _initializeButtons() {
         let nameButtons = document.querySelectorAll(".setNameBtn");
         for (let i = 0; i < nameButtons.length; ++i) {
             nameButtons[i].addEventListener("click", function() {
@@ -146,8 +165,22 @@ let displayController = (function() {
         }
     }
 
-    return {initializeButtons};
+    function _initializeEvents() {
+        let boardDisplay = document.querySelector("#board");
+        boardDisplay.addEventListener("playerWin", function(event) {
+            alert(`${event.detail.name()} wins!`);
+            _setPlayerScore(event.detail.id(), event.detail.score());
+        } );
+    }
+
+    function initialize() {
+        _initializeButtons();
+        _initializeEvents();
+    }
+
+    return {initialize};
 })();
 
 game.initialize();
-displayController.initializeButtons();
+displayController.initialize();
+
