@@ -129,6 +129,11 @@ let displayController = (function() {
             nameButtons[i].addEventListener("click", function() {
                 let promptText = "Enter name for player " + (i+1) + ":";
                 let name = prompt(promptText);
+
+                if (name === null || name === "") {
+                    return;
+                }
+
                 _setPlayerName(i+1, name);
 
                 if (i === 0) {
