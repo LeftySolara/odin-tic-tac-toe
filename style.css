@@ -28,6 +28,27 @@ header {
     width: 100%;
 }
 
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    padding:0;
+    width: 100%;
+    text-align: right;
+    text-decoration: none;
+    font-family: "Fira Sans", sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    padding-bottom: 15px;
+}
+
+footer a {
+    color: #504945;
+    text-decoration: none;
+    padding-right: 20px;
+}
+
 #boardContainer {
     display: flex;
     align-items: center;
