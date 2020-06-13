@@ -155,9 +155,9 @@ const game = (function() {
 
 let displayController = (function() {
 
-    function _setPlayerName(number, name) {
-        let id = "#player" + number + "Name";
-        let nameDisplay = document.querySelector(id);
+    function _setPlayerName(playerID, name) {
+        let elemID = "#player" + playerID + "Name";
+        let nameDisplay = document.querySelector(elemID);
         nameDisplay.innerHTML = name;
     }
 
