@@ -56,6 +56,18 @@ const gameBoard = (function() {
         }
     }
 
+    function clear() {
+        let squares = Array.from(document.querySelectorAll(".boardSquare"));
+
+        for (let row = 0; row < _board.length; ++row) {
+            for (let col = 0; col < _board[0].length; ++col) {
+                let square = squares.shift();
+                square.innerHTML = "";
+                _board[row][col] = square;
+            }
+        }
+    }
+
     function initialize(turnFunc) {
         let squares = Array.from(document.querySelectorAll(".boardSquare"));
         for (let row = 0; row < _board.length; ++row) {
@@ -69,7 +81,7 @@ const gameBoard = (function() {
         }
     }
 
-    return {setSymbol, checkForWin, markBoard, initialize};
+    return {setSymbol, checkForWin, markBoard, clear, initialize};
 })();
 
 const game = (function() {
@@ -98,12 +110,25 @@ const game = (function() {
         gameBoard.setSymbol(_currentPlayer.tile);
     }
 
+    function _resetPlayerMarks() {
+        _player1.marks.row = [0, 0, 0];
+        _player1.marks.column = [0, 0, 0];
+        _player1.marks.diag = 0;
+        _player1.marks.antidiag = 0;
+
+        _player2.marks.row = [0, 0, 0];
+        _player2.marks.column = [0, 0, 0];
+        _player2.marks.diag = 0;
+        _player2.marks.antidiag = 0;
+    }
+
     function performTurn(row, column) {
         gameBoard.markBoard(row, column);
         if (gameBoard.checkForWin(row, column, _currentPlayer.marks)) {
             _currentPlayer.score++;
             let boardDisplay = document.querySelector("#board");
             boardDisplay.dispatchEvent(_winEvent);
+            _resetPlayerMarks();
         }
         _switchPlayer();
     }
@@ -170,6 +195,7 @@ let displayController = (function() {
         boardDisplay.addEventListener("playerWin", function(event) {
             alert(`${event.detail.name()} wins!`);
             _setPlayerScore(event.detail.id(), event.detail.score());
+            gameBoard.clear();
         } );
     }
 
