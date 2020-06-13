@@ -133,12 +133,13 @@ const game = (function() {
         _switchPlayer();
     }
 
-    function setPlayer1Name(name) {
-        _player1.name = name;
-    }
-
-    function setPlayer2Name(name) {
-        _player2.name = name;
+    function setPlayerName(playerID, name) {
+        if (playerID === 1) {
+            _player1.name = name;
+        }
+        else if (playerID === 2) {
+            _player2.name = name;
+        }
     }
 
     function initialize() {
@@ -150,7 +151,7 @@ const game = (function() {
         gameBoard.setSymbol(_currentPlayer.tile);
     }
 
-    return {initialize, setPlayer1Name, setPlayer2Name};
+    return {initialize, setPlayerName};
 })();
 
 let displayController = (function() {
@@ -179,13 +180,7 @@ let displayController = (function() {
                 }
 
                 _setPlayerName(i+1, name);
-
-                if (i === 0) {
-                    game.setPlayer1Name(name);
-                }
-                else {
-                    game.setPlayer2Name(name);
-                }
+                game.setPlayerName(i+1, name);
             });
         }
     }
