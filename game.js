@@ -90,6 +90,7 @@ const game = (function() {
     let _player1;
     let _player2;
     let _currentPlayer;
+    let _turnCount;
 
     const _winEvent = new CustomEvent("playerWin", {
         bubbles: true,
@@ -99,6 +100,9 @@ const game = (function() {
             score: () => _currentPlayer.score
         }
     });
+
+    const _tieEvent = new CustomEvent("playerTie", {
+        bubbles: true});
 
     function _switchPlayer() {
         if (_currentPlayer === _player1) {
@@ -129,7 +133,15 @@ const game = (function() {
             let boardDisplay = document.querySelector("#board");
             boardDisplay.dispatchEvent(_winEvent);
             _resetPlayerMarks();
+            _turnCount = 0;
         }
+        if (++_turnCount >= 9) {
+            let boardDisplay = document.querySelector("#board");
+            boardDisplay.dispatchEvent(_tieEvent);
+            _resetPlayerMarks();
+            _turnCount = 0;
+        }
+
         _switchPlayer();
     }
 
@@ -146,6 +158,7 @@ const game = (function() {
         _player1 = player(1, "Player 1", "X");
         _player2 = player(2, "Player 2", "O");
         _currentPlayer = _player1;
+        _turnCount = 0;
 
         gameBoard.initialize(performTurn);
         gameBoard.setSymbol(_currentPlayer.tile);
@@ -187,11 +200,17 @@ let displayController = (function() {
 
     function _initializeEvents() {
         let boardDisplay = document.querySelector("#board");
+
         boardDisplay.addEventListener("playerWin", function(event) {
             alert(`${event.detail.name()} wins!`);
             _setPlayerScore(event.detail.id(), event.detail.score());
             gameBoard.clear();
         } );
+
+        boardDisplay.addEventListener("playerTie", function() {
+            alert("It's a tie!");
+            gameBoard.clear();
+        });
     }
 
     function initialize() {
